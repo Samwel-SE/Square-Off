@@ -4,7 +4,10 @@ Get IP of your computer and enter that into the server and network scripts in th
 
 Then run server script
 
-Then run up to two instances of the main script
+Then run up to two instances of the main script, this can be done from two different devices. 
+
+Up to two as you can only have a max of two players per server. 
+
 
 
 
