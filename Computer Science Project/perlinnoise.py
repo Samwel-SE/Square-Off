@@ -3,7 +3,7 @@ import random
 def randomise(terms):
     for i in range(len(terms)):
         # these arguments control range of values for y variable of terrain
-        terms[i] = random.randint(375, 625)  
+        terms[i] = random.randint(275, 600)  
 
 
 # smooths terrain by setting y variable equal to average of itself and adjacent y variables in list

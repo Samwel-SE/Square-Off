@@ -4,12 +4,10 @@ import pygame
 from pygame.locals import QUIT
 import time
 
-
 from network import Network
 
 # below import is used with network object and server script
 from helperfunctions import convert_recv_client_data_to_int, convert_client_data_to_string, convert_recv_map_data_to_int
-
 
 
 # game object class, to be inherited by all other classes
@@ -31,6 +29,7 @@ class GameObject:
         if (self.x < obj2.x + obj2.width and self.x + self.width > obj2.x) and (self.y + self.height > obj2.y and self.y < obj2.y + obj2.height):
             return True
 
+
 # Map class
 class Map:
 
@@ -41,7 +40,7 @@ class Map:
 
         # stores y variables of all the objects making up the map
         self.y_vars = 0
-        self.piece_height = 700
+        self.piece_height = 300
 
     # creates map obj once y_vars stores new map sent from server
     def create_map_obj(self):
@@ -63,18 +62,18 @@ class Title_Screen:
         # x coord of text so its alligned with center of screen
         self.x_pos = DISPLAYSURF.get_width()//2 - 100
 
-        self.join_server_1_button = Button(self.x_pos, 300, 220, 30, white)
+        self.join_server_1_button = Button(self.x_pos, 200, 220, 30, white)
 
-        self.join_server_2_button = Button(self.x_pos, 400, 220, 30, white)
+        self.join_server_2_button = Button(self.x_pos, 300, 220, 30, white)
 
-        self.quit_game_button = Button(self.x_pos, 500, 220, 30, white)
+        self.quit_game_button = Button(self.x_pos, 400, 220, 30, white)
 
         self.open = True
 
 
     # to be called in the pygame event loop
     def handle_button_presses(self):
-
+        
         if self.join_server_1_button.on_click():
             
             # you join the server 
@@ -106,16 +105,16 @@ class Title_Screen:
         DISPLAYSURF.blit(text.render("SQUARE OFF", False, white), (self.x_pos, 100))
         
         # draws join_server 1 button
-        DISPLAYSURF.blit(text.render("Join Server 1", False, white), (self.x_pos, 300))
+        DISPLAYSURF.blit(text.render("Join Server 1", False, white), (self.x_pos, 200))
         self.join_server_1_button.draw()
 
         # draws join_server 2 button
-        DISPLAYSURF.blit(text.render("Join Server 2", False, white), (self.x_pos, 400))
+        DISPLAYSURF.blit(text.render("Join Server 2", False, white), (self.x_pos, 300))
         self.join_server_2_button.draw()
 
 
         # draws quit game button
-        DISPLAYSURF.blit(text.render("Quit Game", False, white), (self.x_pos, 500))
+        DISPLAYSURF.blit(text.render("Quit Game", False, white), (self.x_pos, 400))
         self.quit_game_button.draw()
 
 
@@ -497,7 +496,7 @@ class Game:
 
         
             # draws text for the begining of game, ends of rounds and the end of the game
-            DISPLAYSURF.blit(text.render(self.text, False, white), (200, 200))
+            DISPLAYSURF.blit(text.render(self.text, False, white), (100, 200))
 
     
     def start_round(self):
@@ -591,7 +590,7 @@ def join_server(server_address):
     #server_ip = "172.17.126.26"
     
     #home LAN ip 
-    server_ip = "192.168.1.174"
+    server_ip = "172.21.101.224"
 
     n.assign_network_address(server_ip, server_address)
     if n.connect() == "connection success":
@@ -663,7 +662,7 @@ green = (0, 100, 10)
 pygame.init()
 
 # INITIALISING DISPLAY SURFACE
-DISPLAYSURF = pygame.display.set_mode((1200, 800))
+DISPLAYSURF = pygame.display.set_mode((800, 600))
 DISPLAYSURF.fill(black)
 
 pygame.display.set_caption('SQUARE OFF')
@@ -700,6 +699,8 @@ def Quitting_Game(trigger):
     if trigger.type == QUIT:
         pygame.quit()
         sys.exit()
+
+
 
 # MAIN GAME LOOP ################################################################################
 

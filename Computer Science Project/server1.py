@@ -7,7 +7,6 @@ from helperfunctions import convert_round_start_data_to_string, convert_client_p
 
 # ---------------------------- THIS IS A SCRIPT I HAVE MODIFIED, THE ORIGINAL SCRIPT IS WRITTEN BY TECH WITH TIM ---------------------------#
 
-
 # home wifi
 server = "0.0.0.0" 
 
@@ -32,7 +31,7 @@ print("Server Started")
 
 # player data begins with starting positions of the players and their cursors Ie player.x, player.y, cursor.x, cursor.y
 # starting_player_data remains constant so players spawn in the same place at the start of each round with same conditions 
-starting_player_data = [(100, 100, 100, 100, 0), (1000, 100, 1000, 100, 0)]
+starting_player_data = [(100, 100, 100, 100, 0), (700, 100, 700, 100, 0)]
 
 
 # player data is updated as the round plays out which is why it is initially equal to start_pos as it changes
@@ -44,13 +43,13 @@ player_data = [(100, 100, 100, 100, 0),(1000, 100, 1000, 100, 0)]
 # generates list of y variables for pieces of map
 def generate_maps():
     # pregame map isnt randomised 
-    pre_game_map = [500] * 1300
+    pre_game_map = [500] * 900
     
-    map_1 = perlinnoise.generate(1300, 50)
-    map_2 = perlinnoise.generate(1300, 25)
-    map_3 = perlinnoise.generate(1300, 25)
-    map_4 = perlinnoise.generate(1300, 25)
-    map_5 = perlinnoise.generate(1300, 25)
+    map_1 = perlinnoise.generate(900, 50)
+    map_2 = perlinnoise.generate(900, 42)
+    map_3 = perlinnoise.generate(900, 35)
+    map_4 = perlinnoise.generate(900, 28)
+    map_5 = perlinnoise.generate(900, 25)
 
     # returns map in large list
     return [pre_game_map, map_1, map_2, map_3, map_4, map_5]
@@ -77,7 +76,7 @@ def threaded_client(conn, client_num, maps):
     while True:
         
         # recieves data from client 
-        data = conn.recv(4096).decode()
+        data = conn.recv(2048).decode()
 
         # checks if there is data or if client wants to disconnect
         if not(data) or data == "DISCONNECT":
@@ -120,12 +119,13 @@ def threaded_client(conn, client_num, maps):
                 # turns the data to be sent into string so it can be encoded
                 data_to_be_sent = convert_round_start_data_to_string(client_num, starting_player_data[client_num], maps[map_counter])
 
+                #print("THE DATA LENGTH IS : ",len(data_to_be_sent))
+
                 # chunks the map data into two parts so it doesnt go over the huffer limit
-                data_to_be_sent_prt_1 = data_to_be_sent[0:4096]
-                data_to_be_sent_prt_2 = data_to_be_sent[4096:-1]
+                data_to_be_sent_prt_1 = data_to_be_sent[0:2048]
+                data_to_be_sent_prt_2 = data_to_be_sent[2048:-1]
 
                 #print("sending new map")
-
                 # sends the new map in two parts as stated above
                 conn.sendall(str.encode(data_to_be_sent_prt_1))
                 conn.sendall(str.encode(data_to_be_sent_prt_2))
