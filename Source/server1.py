@@ -2,7 +2,7 @@ import socket
 from _thread import *
 import perlinnoise
 import sys
-from helperfunctions import convert_round_start_data_to_string, convert_client_position_data_to_string, convert_recv_client_data_to_int
+from helperfunctions import *
 
 
 # ---------------------------- THIS IS A SCRIPT I HAVE MODIFIED, THE ORIGINAL SCRIPT IS WRITTEN BY TECH WITH TIM ---------------------------#
@@ -65,7 +65,7 @@ def threaded_client(conn, client_num, maps):
     
     # sends player data to the player client and sends the map data to the player aswell
     try: 
-        conn.send(str.encode(convert_round_start_data_to_string(client_num, starting_player_data[client_num], maps[map_counter])))
+        conn.send(str.encode(convertRoundStartDataToString(client_num, starting_player_data[client_num], maps[map_counter])))
         reply = ""
 
     except:
@@ -92,7 +92,7 @@ def threaded_client(conn, client_num, maps):
         # [0] and [1] are the clients x and y coords
         # [2] and [3] are the clients cursors x and y coords
         # [4] is the players state_checker variable: used to check if the player has shot a bomb 
-        data = convert_recv_client_data_to_int(data)
+        data = convertRecvClientDataToInt(data)
         
         
         player_data[client_num] = data
@@ -109,7 +109,7 @@ def threaded_client(conn, client_num, maps):
     
         # if a player hasnt died that state doesn't change and so player just recieves data as normal
         if data[-1] != 2:
-            conn.sendall(str.encode(convert_client_position_data_to_string(reply)))
+            conn.sendall(str.encode(convertClientPositionDataToString(reply)))
 
 
         if current_connections == 2:
@@ -117,7 +117,7 @@ def threaded_client(conn, client_num, maps):
             if data[-1] == 2:
                 map_counter += 1  
                 # turns the data to be sent into string so it can be encoded
-                data_to_be_sent = convert_round_start_data_to_string(client_num, starting_player_data[client_num], maps[map_counter])
+                data_to_be_sent = convertRoundStartDataToString(client_num, starting_player_data[client_num], maps[map_counter])
 
                 #print("THE DATA LENGTH IS : ",len(data_to_be_sent))
 

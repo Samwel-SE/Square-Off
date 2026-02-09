@@ -7,7 +7,7 @@ import time
 from network import Network
 
 # below import is used with network object and server script
-from helperfunctions import convert_recv_client_data_to_int, convert_client_data_to_string, convert_recv_map_data_to_int
+from helperfunctions import *
 
 
 # game object class, to be inherited by all other classes
@@ -414,7 +414,7 @@ class Game:
     def transfer_data(self):
     
         return n.transfer( 
-                    convert_client_data_to_string(
+                    convertClientDataToString(
                         (
                         self.player.x,               
                         self.player.y,               
@@ -469,7 +469,7 @@ class Game:
         # transfers player data and updates the enemy clients player on your screen
         try: 
             self.other_player.set_player_data(
-                convert_recv_client_data_to_int(self.transfer_data())
+                convertRecvClientDataToInt(self.transfer_data())
             ) 
 
             # resets state checker back to 0 at the end of every update loop so that only bomb object is created
@@ -513,11 +513,11 @@ class Game:
         self.player.state_checker = 0
 
         # creates the new map object for the game
-        self.map.y_vars = convert_recv_map_data_to_int(map_data)
+        self.map.y_vars = convertRecvMapDataToInt(map_data)
         self.map.create_map_obj()
         
         # sets the player client back to its starting position and sets the player clients state checker to 0
-        player_data = convert_recv_client_data_to_int(n.getPos())
+        player_data = convertRecvClientDataToInt(n.getPos())
         self.player.set_player_data(player_data)
 
         # player will fall fast downwards onto next map
@@ -590,14 +590,14 @@ def join_server(server_address):
     #server_ip = "172.17.126.26"
     
     #home LAN ip 
-    server_ip = "172.17.231.108"
+    server_ip = "143.167.179.71"
 
     n.assign_network_address(server_ip, server_address)
     if n.connect() == "connection success":
         n.update_data_client_side()
 
         # n.getPos only returns 4 values so we need to prematurely append a 0 to act as the state for the startpos
-        startpos = convert_recv_client_data_to_int(n.getPos())
+        startpos = convertRecvClientDataToInt(n.getPos())
 
         # chooses the player colour based on if the player connected first
 
@@ -627,7 +627,7 @@ def join_server(server_address):
 
 
         # sets the map object up
-        terr.y_vars = convert_recv_map_data_to_int(n.getMap())
+        terr.y_vars = convertRecvMapDataToInt(n.getMap())
         terr.create_map_obj()
 
         # stops player from seeing mouse cursor so has to use in game cursor to aim
