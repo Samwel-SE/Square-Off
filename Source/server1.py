@@ -2,10 +2,10 @@ import socket
 from _thread import *
 import perlinnoise
 import sys
-from helperfunctions import *
 
 
-# ---------------------------- THIS IS A SCRIPT I HAVE MODIFIED, THE ORIGINAL SCRIPT IS WRITTEN BY TECH WITH TIM ---------------------------#
+from ServerFunctions import *
+from CommonFunctions import *
 
 # home wifi
 server = "0.0.0.0" 
@@ -65,7 +65,14 @@ def threaded_client(conn, client_num, maps):
     
     # sends player data to the player client and sends the map data to the player aswell
     try: 
-        conn.send(str.encode(convertRoundStartDataToString(client_num, starting_player_data[client_num], maps[map_counter])))
+        conn.send(
+            str.encode(
+                convertRoundStartDataToString(
+                    client_num, starting_player_data[client_num], 
+                    maps[map_counter]
+                )
+            )
+        )
         reply = ""
 
     except:

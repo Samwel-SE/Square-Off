@@ -7,8 +7,8 @@ import time
 from network import Network
 
 # below import is used with network object and server script
-from helperfunctions import *
-
+from ClientFunctions import *
+from CommonFunctions import *
 
 # game object class, to be inherited by all other classes
 class GameObject:
@@ -585,12 +585,8 @@ def join_server(server_address):
 
     n = Network()
     
-    # project doesnt use actual IP's only those on your local area network
-    #school LAN ip
-    #server_ip = "172.17.126.26"
-    
-    #home LAN ip 
-    server_ip = "143.167.179.71"
+    #Please put IP here
+    server_ip = "172.17.231.108"
 
     n.assign_network_address(server_ip, server_address)
     if n.connect() == "connection success":
