@@ -33,7 +33,7 @@ class Network:
     def assign_network_address(self, ip, port):
         self.addr = (ip, port)
 
-    # get functions -------------------------------------------------
+    # get functions 
     def getPos(self):
         return self.pos + "," + self.cursor_pos + ",0"
 
@@ -42,7 +42,7 @@ class Network:
 
     def getMap(self):
         return self.map
-    # --------------------------------------------------------------
+    
 
 
     # client connecting to server
