@@ -4,8 +4,8 @@ import perlinnoise
 import sys
 
 
-from ServerFunctions import *
-from CommonFunctions import *
+from server_functions import *
+from common_functions import *
 
 # home wifi
 server = "0.0.0.0" 
