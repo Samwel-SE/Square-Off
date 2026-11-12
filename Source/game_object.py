@@ -6,17 +6,18 @@ from pygame.locals import QUIT
 # game object class, to be inherited by all other classes
 class GameObject:
 
-    def __init__(self, x, y, width, height, colour):
+    def __init__(self, x, y, width, height, colour, screen):
         self.x = x
         self.y = y
         self.width = width
         self.height = height
         self.colour = colour
+        self.screen = screen
 
     # draws the gameobject 
     def draw(self):
         pygame.draw.rect(
-            DISPLAYSURF, 
+            self.screen, 
             self.colour, 
             pygame.Rect(self.x, self.y, self.width, self.height)
         )

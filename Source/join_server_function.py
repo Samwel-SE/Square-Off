@@ -1,3 +1,5 @@
+import pygame
+
 from network import Network
 
 # below import is used with network object and server script
@@ -5,7 +7,7 @@ from client_functions import *
 from common_functions import *
 from colours import *
 
-def join_server(server_address):
+def join_server(server_address, DISPLAYSURF, player1, player2, terr):
     
     global n 
 
@@ -48,7 +50,7 @@ def join_server(server_address):
 
         # sets the map object up
         terr.y_vars = convertRecvMapDataToInt(n.getMap())
-        terr.create_map_obj()
+        terr.create_map_obj(DISPLAYSURF)
 
         # stops player from seeing mouse cursor so has to use in game cursor to aim
         pygame.mouse.set_visible(False)

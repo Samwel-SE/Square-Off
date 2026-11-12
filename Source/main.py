@@ -21,6 +21,8 @@ from player import Player
 from bomb import Bomb
 
 
+from join_server_function import *
+
 
 #all objects are controlled through the game object
 class Game:
@@ -42,12 +44,12 @@ class Game:
         self.text = "INTERIM ROUND ... WEAPONS DISABLED TILL OTHER PLAYER JOINS"
 
         
-        
 
     # gets the player inputs
-    def getInputs(self): 
+    def getInputs(self, event): 
         # only checks for player inputs when the game isn't paused
-        self.player.inputs()
+        self.player.inputs(event)
+
 
 
     # transfers clients data and map data
@@ -65,6 +67,8 @@ class Game:
             )
         )
     
+
+
     # updates the objects in the game
     def update(self):
         
@@ -110,6 +114,8 @@ class Game:
         except:
             print("The client has disconnected from the server")
 
+
+
     def draw(self):
         
         #draws player objects and map
@@ -129,6 +135,7 @@ class Game:
             DISPLAYSURF.blit(text.render(self.text, False, WHITE), (100, 200))
 
 
+
     def start_round(self):
         # sets state checker to "2" to tell server to send next map
         self.player.state_checker = 2
@@ -144,7 +151,7 @@ class Game:
 
         # creates the new map object for the game
         self.map.y_vars = convertRecvMapDataToInt(map_data)
-        self.map.create_map_obj()
+        self.map.create_map_obj(DISPLAYSURF)
         
         # sets the player client back to its starting position and sets the player clients state checker to 0
         player_data = convertRecvClientDataToInt(n.getPos())
@@ -157,6 +164,7 @@ class Game:
         pygame.event.clear()
 
     
+
     # pauses the game for 5 seconds and renders end round / game text
     def pause_game(self):
         
@@ -171,6 +179,7 @@ class Game:
             time.sleep(1)
 
 
+
     def endOfRoundChecks(self, lives):
         
         if lives == 0:
@@ -178,6 +187,7 @@ class Game:
         
         else:
             self.end_round()
+
 
 
     def end_round(self):
@@ -190,6 +200,7 @@ class Game:
         self.other_player.jumping = False
         self.text = ""
         self.start_round()
+
 
 
     # called once the game ends to reset to manage connections and re open main menu
@@ -216,12 +227,6 @@ class Game:
 
   
 
-# checks whether or not the other player has joined
-def check_server_full():
-    if (player2.x -1000 == 0) and (player2.y -100 == 0):
-        return False
-    return True
-
 
 # pygame initialisation
 pygame.init()
@@ -236,8 +241,8 @@ pygame.display.set_caption('SQUARE OFF')
 
 
 # player objects
-player1 = Player(0, 0, 5, 5, RED, 0)
-player2 = Player(0, 0, 5, 5, RED, 0)
+player1 = Player(0, 0, 5, 5, RED, DISPLAYSURF, 0)
+player2 = Player(0, 0, 5, 5, RED, DISPLAYSURF, 0)
 
 
 # terr is the map object
@@ -275,14 +280,43 @@ while True:
     DISPLAYSURF.fill(BLACK)
 
 
-    # runs whilst the menu is open
+    # Runs whilst menu open:
     if main_menu.open:
         
         for event in pygame.event.get():
-            #quits the game
+            # Quits the game
             Quitting_Game(event)
-            main_menu.handle_button_presses(event)
-        
+            # main_menu.handle_button_presses(event)
+            
+            # rewriting the handle_button_presses function to directly edit player
+
+            # join server 1 button pressed
+            if main_menu.join_server_1_button.on_click(event):
+                
+                # join server 1
+                if join_server(5555, DISPLAYSURF, player1, player2, terr):
+                    main_menu.open = False
+
+                # servers full: error text shown
+                else:
+                    main_menu.join_server_1_button.error_text_on = True    
+            
+
+            # join server 2 button pressed
+            if main_menu.join_server_2_button.on_click(event): 
+                
+                # join server 2
+                if join_server(6666, DISPLAYSURF, player1, player2, terr):
+                    main_menu.open = False
+                
+                # servers full: error text shown
+                else:
+                    main_menu.join_server_2_button.error_text_on = True
+
+            if main_menu.quit_game_button.on_click(event):
+                quit()
+
+
         # draws the title screen
         main_menu.draw()
         pygame.display.flip()
@@ -292,11 +326,12 @@ while True:
         Clock.tick(60)
     
 
+    # runs whilst menu closed:
     else:
         # gets key preses and button presses
         for event in pygame.event.get():
             Quitting_Game(event)
-            game.getInputs()
+            game.getInputs(event)
 
 
         game.update()

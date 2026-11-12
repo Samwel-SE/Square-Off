@@ -18,11 +18,11 @@ class GameMap:
         self.piece_height = 300
 
     # creates map obj once y_vars stores new map sent from server
-    def create_map_obj(self):
+    def create_map_obj(self, screen):
         self.pieces.clear()
         for i in range(len(self.y_vars)):
             self.pieces.append(
-                GameObject(i, self.y_vars[i], 1, self.piece_height, self.colour)
+                GameObject(i, self.y_vars[i], 1, self.piece_height, self.colour, screen)
             )
 
     # iterates through and draws all the gameobjects making up the map

@@ -16,11 +16,13 @@ from game_object import GameObject
 from game_map import GameMap
 from bomb import Bomb
 
+from check_server_full import *
+
 # player class inherits gameobject class
 class Player(GameObject):
     
-    def __init__(self, x, y, width, height, colour, ui_x_coord):
-        super().__init__(x, y, width, height, colour)
+    def __init__(self, x, y, width, height, colour, screen, ui_x_coord):
+        super().__init__(x, y, width, height, colour, screen)
 
         # user interface x coordinate
         self.ui_x_coord = ui_x_coord
@@ -51,7 +53,7 @@ class Player(GameObject):
     
 
     # gets keys currently pressed so player character can move
-    def inputs(self):
+    def inputs(self, event):
 
         # movement inputs
         if event.type == pygame.KEYDOWN:
@@ -71,8 +73,7 @@ class Player(GameObject):
         # Once the left mouse button is pressed and there are no other bombs on screen will create a bomb object,
         if event.type == pygame.MOUSEBUTTONDOWN:
             
-            if (check_server_full() and
-                pygame.mouse.get_pressed(3) and
+            if (pygame.mouse.get_pressed(3) and
                 (len(self.bombs) == 0) and 
                 (self.state_checker != 9)
                 ):
@@ -97,7 +98,7 @@ class Player(GameObject):
         if (self.y > pieces[self.x -3].y +2) or self.x <= 10:
             self.move_left = False 
                     
-        elif (self.y > pieces[self.x +3].y +2) or self.x >= DISPLAYSURF.get_width() -10:
+        elif (self.y > pieces[self.x +3].y +2) or self.x >= self.screen.get_width() -10:
             self.move_right = False
 
         # jump command for player 
@@ -171,6 +172,7 @@ class Player(GameObject):
                     3, 
                     3, 
                     (255, 255, 0), 
+                    self.screen,
                     self.bomb_dx, 
                     self.bomb_dy
                 )
@@ -198,7 +200,7 @@ class Player(GameObject):
         super().draw()
 
         # draws players cursor
-        pygame.draw.line(DISPLAYSURF, self.colour, (self.x + 2, self.y + 2), self.cursor_pos,1)
+        pygame.draw.line(self.screen, self.colour, (self.x + 2, self.y + 2), self.cursor_pos,1)
 
         #draws player live count
         for i in range(self.lives):
@@ -206,7 +208,7 @@ class Player(GameObject):
             xCoordOfRect = self.lives +i*10 +self.ui_x_coord
             
             pygame.draw.rect(
-                DISPLAYSURF, 
+                self.screen, 
                 self.colour, 
                 pygame.Rect(xCoordOfRect, 0, 5, 10)
             )

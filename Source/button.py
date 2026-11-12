@@ -11,18 +11,17 @@ from game_object import GameObject
 # button class is used in the title screen
 class Button(GameObject):
 
-    def __init__(self, x, y, width, height, colour, displaySurface, text):
-        super().__init__(x, y, width, height, colour)
+    def __init__(self, x, y, width, height, colour, screen, text):
+        super().__init__(x, y, width, height, colour, screen)
 
         self.error_text_on = False
-        self.displaySurface = displaySurface
         self.text = text
 
     #overrides draw so text is visible
     def draw(self):
         
         pygame.draw.rect(
-            self.displaySurface, 
+            self.screen, 
             self.colour, 
             pygame.Rect(self.x, self.y, self.width, self.height), 
             1

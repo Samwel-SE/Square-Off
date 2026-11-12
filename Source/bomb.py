@@ -20,8 +20,8 @@ from game_map import GameMap
 # Bomb class, inherits Game Object Class
 class Bomb(GameObject):
 
-    def __init__(self, x, y, width, height, colour, dx, dy):
-        super().__init__(x, y, width, height, colour)
+    def __init__(self, x, y, width, height, colour, screen, dx, dy):
+        super().__init__(x, y, width, height, colour, screen)
         
         # change in x and y Ie movement speed of bomb
         self.dx = dx
@@ -45,7 +45,7 @@ class Bomb(GameObject):
         self.dy += 1
 
         # collision for bombs and end of screen
-        if self.x >= DISPLAYSURF.get_width() or self.x <= 0:
+        if self.x >= self.screen.get_width() or self.x <= 0:
             self.explode()
         
 
@@ -60,7 +60,7 @@ class Bomb(GameObject):
 
             # rgb code used below is colour orange
             pygame.draw.circle(
-                DISPLAYSURF, 
+                self.screen, 
                 ORANGE, 
                 (self.x+1, self.y+1), 
                 self.exp_rad
